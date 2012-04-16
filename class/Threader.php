@@ -15,14 +15,16 @@
             if (!empty($stid)) {
             
                 $Twitter = new Twitter($stid);
-                $repid = $Twitter->ReplyId();
+                $profile = $Twitter->getUserProfile();
+                $repid = $profile->ReplyId;
                 $thread = array();
-                $thread[] = $this->SetThreadArray($Twitter);
+                $thread[] = $this->SetThreadArray($profile);
                 
                 while (!empty($repid)) {
                     $Twitter = new Twitter($repid);
-                    $repid = $Twitter->ReplyId();
-                    $thread[] = $this->SetThreadArray($Twitter);
+                    $profile = $Twitter->getUserProfile();
+                    $repid = $profile->ReplyId;
+                    $thread[] = $this->SetThreadArray($profile);
                 }
                 //逆順にして出力
                 $this->JsonPrint(array_reverse($thread));
@@ -43,24 +45,25 @@
         //必要項目を配列化する
         private function SetThreadArray ($obj) {
             return array(
-                'sname' => $obj->Sname(),
-                'name'  => $obj->Name(),
-                'id'    => $obj->UserId(),
-                'text'  => $obj->Text(),
-                'stid'  => $obj->StId(),
-                'date'  => $this->FormatDate($obj->CreateDate()),
-                'repid' => $obj->ReplyId()
+                'sname' => $obj->Sname,
+                'name'  => $obj->Name,
+                'id'    => $obj->UserId,
+                'text'  => $obj->Text,
+                'stid'  => $obj->StId,
+                'date'  => $this->FormatDate($obj->CreateDate),
+                'repid' => $obj->ReplyId
             );
         }
         
         //JSONに形成し出力
         private function JsonPrint ($obj) {
-            $json = json_encode($obj);
+            //$json = json_encode($obj);
+            $json = $obj;
             $callback = $this->getQuery('callback');
             if (!empty($callback)) {
                 echo $callback.'('.$json.');';
             } else {
-                echo $json;
+                print_r($json);
             }
         }
         

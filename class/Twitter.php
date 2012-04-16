@@ -7,6 +7,14 @@
     class Twitter {
     
         public $show;
+        public $profile;
+        public $ReplyId;
+        public $Sname;
+        public $Name;
+        public $UserId;
+        public $Text;
+        public $StId;
+        public $CreateDate;
         
         public function __construct ($stid) {
             $api = "https://api.twitter.com/1/statuses/show/{$stid}.json";
@@ -17,39 +25,17 @@
             }
         }
         
-        public function ReplyId () {
+        public function getUserProfile () {
             $json = $this->show;
-            return $json->in_reply_to_status_id_str;
-        }
-        
-        public function Sname () {
-            $json = $this->show;
-            return $json->user->screen_name;
-        }
-        
-        public function Name () {
-            $json = $this->show;
-            return $json->user->name;
-        }
-        
-        public function UserId () {
-            $json = $this->show;
-            return $json->user->id_str;
-        }
-        
-        public function  Text () {
-            $json = $this->show;
-            return $json->text;
-        }
-        
-        public function StId () {
-            $json = $this->show;
-            return $json->id_str;
-        }
-        
-        public function CreateDate () {
-            $json = $this->show;
-            return $json->created_at;
+            $this->profile->ReplyId = $json->in_reply_to_status_id_str;
+            $this->profile->Sname = $json->user->screen_name;
+            $this->profile->Name = $json->user->name;
+            $this->profile->UserId = $json->user->id_str;
+            $this->profile->Text = $json->text;
+            $this->profile->StId = $json->id_str;
+            $this->profile->CreateDate = $json->created_at;
+            
+            return $this->profile;
         }
         
     }
