@@ -57,13 +57,12 @@
         
         //JSONに形成し出力
         private function JsonPrint ($obj) {
-            //$json = json_encode($obj);
-            $json = $obj;
+            $json = json_encode($obj);
             $callback = $this->getQuery('callback');
             if (!empty($callback)) {
                 echo $callback.'('.$json.');';
             } else {
-                print_r($json);
+                echo $json;
             }
         }
         
